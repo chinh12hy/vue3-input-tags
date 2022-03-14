@@ -1,30 +1,30 @@
 <template>
   <div @click="focusNewTag()"
        :class="{
-          'cs-input--focus': isInputActive,
-          'cs-input--error': isError
+          'v3it--focus': isInputActive,
+          'v3it--error': isError
         }"
-       class="cs-input vue-input-tag-wrapper">
-    <div class="flex flex-row w-full">
-      <div class="w-full flex flex-row flex-wrap">
+       class="v3it">
+      <div class="v3it-content">
         <span v-for="(tag, index) in innerTags"
               :key="index"
-              class="input-tag">
-          <slot name="item" v-bind="{ name: tag }"></slot>
-          <a v-if="!readOnly" @click.prevent.stop="remove(index)" class="remove"></a>
+              class="v3it-tag">
+          <slot v-if="$slots.item"
+                name="item" v-bind="{ name: tag, index }"></slot>
+          <span v-else> {{ tag }} </span>
+          <a v-if="!readOnly" @click.prevent.stop="remove(index)" class="v3it-remove-tag"></a>
         </span>
         <input
             ref="inputTag"
             :placeholder="placeholder"
             v-model="newTag"
-            v-on:keydown.delete.stop="removeLastTag"
-            v-on:keydown="addNew"
-            v-on:blur="handleInputBlur"
-            v-on:focus="handleInputFocus"
-            v-on:input="makeItNormal"
-            class="new-tag"/>
+            @keydown.delete.stop="removeLastTag"
+            @keydown="addNew"
+            @blur="handleInputBlur"
+            @focus="handleInputFocus"
+            @input="makeItNormal"
+            class="v3it-new-tag"/>
       </div>
-    </div>
   </div>
 </template>
 
@@ -39,8 +39,10 @@ const validators = {
   text: new RegExp(/^[a-zA-Z]+$/),
 };
 export default {
-  name: "InputTag",
-  emits: ['update:modelValue', 'on-limit', 'on-tags-change', 'on-remove', 'on-remove-error', 'on-error', 'on-focus', 'on-blur', 'new-tag-change-length'],
+  name: "InputTags",
+
+  emits: ['on-limit', 'on-tags-change', 'on-remove', 'on-remove-error', 'on-error', 'on-focus', 'on-blur'],
+
   props: {
     readOnly: {
       type: Boolean,
@@ -64,7 +66,7 @@ export default {
       type: String,
       default: ''
     },
-    modelValue: {
+    tags: {
       type: Array,
       default: () => []
     },
@@ -81,6 +83,7 @@ export default {
       default: false
     },
   },
+
   data() {
     return {
       isInputActive: false,
@@ -102,7 +105,7 @@ export default {
     error() {
       this.isError = this.error;
     },
-    modelValue: {
+    tags: {
       deep: true,
       immediate: true,
       handler(tags) {
@@ -112,28 +115,24 @@ export default {
     },
     newTag() {
       if(this.newTag.length > 50){
-        this.$refs.inputTag.className = 'new-tag txt-error';
+        this.$refs.inputTag.className = 'v3it-new-tag v3it-new-tag--error';
         this.$refs.inputTag.style.textDecoration="underline";
-        this.$emit('new-tag-change-length', true);
-      }
-      else {
-        this.$emit('new-tag-change-length', false);
       }
     }
   },
   methods: {
     makeItNormal() {
-      this.$refs.inputTag.className = 'new-tag';
+      this.$refs.inputTag.className = 'v3it-new-tag';
       this.$refs.inputTag.style.textDecoration="none";
     },
     resetData() {
       this.innerTags = []
     },
     focusNewTag() {
-      if (this.readOnly || !this.$el.querySelector(".new-tag")) {
+      if (this.readOnly || !this.$el.querySelector(".v3it-new-tag")) {
         return;
       }
-      this.$el.querySelector(".new-tag").focus();
+      this.$el.querySelector(".v3it-new-tag").focus();
     },
     handleInputFocus(event) {
       this.isInputActive = true;
@@ -179,7 +178,7 @@ export default {
       }
     },
     makeItError(isDuplicatedOrMaxLength) {
-      this.$refs.inputTag.className = 'new-tag txt-error';
+      this.$refs.inputTag.className = 'v3it-new-tag v3it-new-tag--error';
       this.$refs.inputTag.style.textDecoration="underline";
       this.$emit('on-error', isDuplicatedOrMaxLength);
     },
@@ -223,10 +222,11 @@ export default {
 };
 </script>
 
-<style>
-.vue-input-tag-wrapper {
+<style lang="scss">
+$vue3-tags-error: #F56C6C;
+.v3it {
   border-radius: 5px;
-  min-height: 40px;
+  min-height: 32px;
   line-height: 1.4 !important;
   background-color: #fff;
   border: 1px solid #9ca3af;
@@ -236,71 +236,57 @@ export default {
   -webkit-appearance: textfield;
   display: flex;
   flex-wrap: wrap;
-}
-textarea {
-  resize: none;
-}
-textarea ::placeholder {
-  color: #9ca3af;
+  &--focus {
+    outline: 0;
+    border-color: #000000;
+    box-shadow: 0 0 0 1px #000000;
+  }
+  &--error{
+    border-color: $vue3-tags-error;
+  }
+  .v3it-content {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .v3it-tag {
+    display: flex;
+    font-weight: 400;
+    margin: 3px;
+    padding: 0 5px;
+    background: #317CAF;
+    color: #ffffff;
+    height: 27px;
+    border-radius: 5px;
+    align-items: center;
+    .v3it-remove-tag {
+      color: #ffffff;
+      transition: opacity .3s ease;
+      opacity: .5;
+      cursor: pointer;
+      padding: 0 5px 0 7px;
+      &::before {
+        content: "x";
+      }
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+  .v3it-new-tag {
+    background: transparent;
+    border: 0;
+    font-weight: 400;
+    margin: 3px;
+    outline: none;
+    padding:0 4px;
+    flex: 1;
+    min-width: 60px;
+    height: 27px;
+    &--error {
+      color: #F56C6C;
+    }
+  }
 }
 
-.txt-error {
-  color: red;
-}
-
-.w-full {
-  width: 100%;
-}
-.flex {
-  display: flex;
-}
-.flex-row {
-  flex-direction: row;
-}
-.flex-wrap{
-  flex-wrap: wrap;
-}
-.vue-input-tag-wrapper .input-tag {
-  display: inline-flex;
-  font-weight: 400;
-  margin: 4px;
-  padding: 0 5px;
-  background: #f7f7f7;
-  max-height: 27px;
-  border-radius: 5px;
-  border: 1px solid #eee;
-  flex-direction: row;
-  align-items: center;
-}
-.vue-input-tag-wrapper .new-tag {
-  background: transparent;
-  border: 0;
-  font-weight: 400;
-  margin: 4px;
-  outline: none;
-  flex-grow: 1;
-  padding: 4px 0;
-}
-.vue-input-tag-wrapper .input-tag .remove {
-  font-weight: bold;
-  color: #638421;
-  cursor: pointer;
-  padding: 0 5px 0 7px;
-}
-.vue-input-tag-wrapper .input-tag .remove:hover {
-  text-decoration: none;
-  color: red;
-}
-.vue-input-tag-wrapper .input-tag .remove::before {
-  content: "x";
-}
-.cs-input--focus {
-  outline: 0;
-  border-color: #258456;
-  box-shadow: 0 0 0 2px #258456;
-}
-.cs-input--error{
-  border-color: red;
-  box-shadow: 0 0 0 2px red;
-}
 </style>
