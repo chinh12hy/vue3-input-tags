@@ -1,15 +1,15 @@
-#vue3-input-tags
+# vue3-input-tags
 
 A tags input component for Vue 3 with custom validation, templating...
 
 [Demo & docs ](https://www.example.com)
-#Install
+# Install
 
 ```
 npm i vue3-input-tags
 ```
 
-#Usage
+# Usage
 
 ```vue
 <template>
