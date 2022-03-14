@@ -1,4 +1,5 @@
 #vue3-input-tags
+
 A tags input component for Vue 3 with custom validation, templating...
 
 [Demo & docs ](https://www.example.com)
