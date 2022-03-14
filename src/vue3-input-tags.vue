@@ -223,7 +223,6 @@ export default {
 </script>
 
 <style lang="scss">
-$vue3-tags-error: #F56C6C;
 .v3it {
   border-radius: 5px;
   min-height: 32px;
@@ -242,7 +241,7 @@ $vue3-tags-error: #F56C6C;
     box-shadow: 0 0 0 1px #000000;
   }
   &--error{
-    border-color: $vue3-tags-error;
+    border-color: #F56C6C;
   }
   .v3it-content {
     width: 100%;

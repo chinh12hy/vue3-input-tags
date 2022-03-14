@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div class="form">
+<!--      npm publish-->
       <vue3-input-tags placeholder="add tags"
                        :limit="2"
                        :tags="tags"

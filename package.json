@@ -1,6 +1,6 @@
 {
   "name": "vue3-input-tags",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "author": "Chinh Pham Duc <chinh12hy@gmail.com>",
   "description": "A tags input component for Vue 3 with custom validation, templating...",
   "homepage": "https://chinh-resume.netlify.app/",
