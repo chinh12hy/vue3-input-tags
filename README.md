@@ -3,12 +3,14 @@
 A tags input component for Vue 3 with custom validation, templating...
 
 [Demo & docs ](https://www.example.com)
-
 #Install
+
 ```
 npm i vue3-input-tags
 ```
+
 #Usage
+
 ```vue
 <template>
   <div>
@@ -35,6 +37,5 @@ export default defineComponent({
   },
 })
 </script>
-
 ```
 
