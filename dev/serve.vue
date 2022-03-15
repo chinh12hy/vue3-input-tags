@@ -9,7 +9,7 @@
                        @on-focus="handleFocus"
                        @on-blur="handleBlur"
                        @on-remove="handleRemove"
-                       @on-tags-change="handleChangeTag">
+                       @on-tags-changed="handleChangeTag">
         <template #item="{ name, index }">
           {{ name }}
         </template>

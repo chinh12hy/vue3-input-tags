@@ -41,7 +41,7 @@ const validators = {
 export default {
   name: "InputTags",
 
-  emits: ['on-limit', 'on-tags-change', 'on-remove', 'on-remove-error', 'on-error', 'on-focus', 'on-blur'],
+  emits: ['on-limit', 'on-tags-changed', 'on-remove', 'on-remove-error', 'on-error', 'on-focus', 'on-blur'],
 
   props: {
     readOnly: {
@@ -216,7 +216,7 @@ export default {
       this.$emit("on-remove", index)
     },
     tagChange() {
-      this.$emit("on-tags-change", this.innerTags);
+      this.$emit("on-tags-changed", this.innerTags);
     }
   }
 };
