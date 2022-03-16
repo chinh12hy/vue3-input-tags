@@ -2,7 +2,7 @@
 
 A tags input component for Vue 3 with custom validation, templating...
 
-[Demo & docs ](https://www.example.com)
+[Demo & docs ](https://vue3-input-tags.netlify.app)
 # Install
 
 ```
@@ -13,10 +13,8 @@ npm i vue3-input-tags
 
 ```vue
 <template>
-  <div>
     <vue3-input-tags :tags="tags"
                      placeholder="input tags" />
-  </div>
 </template>
 ```
 
