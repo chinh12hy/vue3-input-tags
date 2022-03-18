@@ -41,13 +41,19 @@ const validators = {
 export default {
   name: "InputTags",
 
-  emits: ['on-limit', 'on-tags-changed', 'on-remove', 'on-remove-error', 'on-error', 'on-focus', 'on-blur'],
+  emits: ['update:modelValue', 'on-limit', 'on-tags-changed', 'on-remove', 'on-error', 'on-focus', 'on-blur'],
 
   props: {
     readOnly: {
       type: Boolean,
       default: false
     },
+
+    modelValue: {
+      type: String,
+      default: '',
+    },
+
     validate: {
       type: [String, Function, Object],
       default: ""
@@ -105,12 +111,17 @@ export default {
     error() {
       this.isError = this.error;
     },
+    modelValue: {
+      immediate: true,
+      handler(value) {
+        this.newTag = value;
+      }
+    },
     tags: {
       deep: true,
       immediate: true,
       handler(tags) {
         this.innerTags = [...tags];
-        this.newTag = ""
       }
     },
     newTag() {
@@ -121,7 +132,8 @@ export default {
     }
   },
   methods: {
-    makeItNormal() {
+    makeItNormal(event) {
+      this.$emit('update:modelValue', event.target.value)
       this.$refs.inputTag.className = 'v3it-new-tag';
       this.$refs.inputTag.style.textDecoration="none";
     },
@@ -148,7 +160,6 @@ export default {
           ? this.addTagOnKeys.indexOf(e.keyCode) !== -1
           : true;
       const typeIsNotBlur = e && e.type !== "blur";
-      this.$emit('on-remove-error');
       if (
           (!keyShouldAddTag && (typeIsNotBlur || !this.addTagOnBlur)) ||
           this.isLimit
@@ -162,6 +173,7 @@ export default {
       ) {
         this.innerTags.push(this.newTag);
         this.newTag = "";
+        this.$emit('update:modelValue', '');
         this.tagChange();
         e && e.preventDefault();
       } else {

@@ -17,7 +17,9 @@
       <br>
       <div class="custom-input-tags">
         <vue3-input-tags :tags="tags"
+                         v-model="tag"
                          placeholder="custom input tags" />
+        <input type="text" v-model="tag">
       </div>
     </div>
   </div>
@@ -36,13 +38,13 @@ export default defineComponent({
 
   data() {
     return {
+      tag: 'model',
       tags: ['VUE', 'HTML', 'CSS']
     }
   },
 
   methods: {
     handleChangeTag(tags) {
-      console.log('tags: ', tags);
       this.tags = tags;
     },
 

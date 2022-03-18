@@ -21,7 +21,7 @@ npm i vue3-input-tags
 ```vue
 <script>
 import { defineComponent } from 'vue';
-import Vue3InputTags from '@/vue3-input-tags.vue';
+import Vue3InputTags from 'vue3-input-tags';
 
 export default defineComponent({
   components: {
@@ -36,4 +36,10 @@ export default defineComponent({
 })
 </script>
 ```
+
+# License
+
+[MIT](https://opensource.org/licenses/MIT)
+
+Copyright (c) 2022 Chinh Pham Duc (chinh12hy@gmail.com)
 
